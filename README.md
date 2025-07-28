@@ -1,309 +1,184 @@
-# Bitte AI Agent NextJS Boilerplate
+# Multi-Chain Momentum Surfer 🏄‍♂️
 
-A comprehensive template for creating AI agents using the Bitte Protocol with Next.js. This boilerplate demonstrates best practices for building blockchain-enabled AI agents with pre-configured tools and endpoints.
+An AI agent that detects momentum on one blockchain and immediately surfs it across multiple chains to capture maximum profit opportunities.
 
-## 🌟 Features
+## 🌊 The Concept
 
-- 🤖 **Complete AI Agent Setup** - Pre-configured agent manifest with OpenAPI specification
-- 🔗 **Blockchain Integration** - Built-in support for NEAR and EVM transactions
-- 🛠️ **Ready-to-Use Tools**:
-  - Blockchain information retrieval
-  - NEAR & EVM transaction generation with wallet integration
-  - Ethereum message signing (eth_sign, personal_sign, typed data)
-  - User account & EVM address retrieval
-  - Twitter share intent generation
-  - Coin flip functionality
-- ⚡ **Next.js 15** with App Router and TypeScript
-- 🎨 **Modern Development Stack** - Tailwind CSS, ESLint, TypeScript
-- 🚀 **One-Command Development** - Integrated with `make-agent` for seamless development
-- 📋 **Production Ready** - Built-in deployment scripts and Vercel integration
+When BTC pumps 5% on Bitcoin, this agent instantly:
 
-## 🚀 Quick Start
+- Buys wBTC on Ethereum
+- Grabs BTCB on BSC
+- Acquires Portal BTC on Solana
+- Rides the momentum wave across ALL chains simultaneously
 
-### Prerequisites
+**Goal**: Turn $2K into $20K by riding cross-chain momentum waves
 
-- Node.js 18+ and pnpm
-- A Bitte wallet account
-- Git
+## 🎯 How It Works
 
-### 1. Clone and Setup
+### 1. **Momentum Detection**
 
-```bash
-git clone https://github.com/BitteProtocol/agent-next-boilerplate.git
-cd agent-next-boilerplate
-pnpm install
-```
+- Scans major tokens (BTC, ETH, SOL, MATIC, etc.) for 3-5%+ price movements
+- Uses real-time data from CoinGecko and Binance APIs
+- Calculates momentum scores based on price change, volume, and market cap
 
-### 2. Environment Configuration
+### 2. **Cross-Chain Price Analysis**
 
-Create a `.env.local` file:
+- Fetches live prices across Ethereum, BSC, Polygon, Solana, Arbitrum, Optimism
+- Identifies arbitrage opportunities between chains
+- Maps token equivalents (BTC → wBTC, BTCB, Portal BTC, etc.)
 
-```bash
-# Required: Get your API key from https://key.bitte.ai
-BITTE_API_KEY='your-api-key'
+### 3. **Strategy Creation**
 
-# Required: Your NEAR account ID (e.g., yourname.near)
-ACCOUNT_ID='your-account.near'
+- Generates multi-chain allocation strategies with risk management
+- Supports low/medium/high risk levels with position sizing
+- Sets profit targets (+15%) and stop losses (-8%)
 
-# Optional: For local development
-NEXT_PUBLIC_HOST='localhost'
-PORT=3000
-```
+### 4. **Execution Planning**
 
-### 3. Start Development
+- Creates detailed trade execution plans across multiple DEXs
+- Optimizes for timing, slippage, and gas fees
+- Integrates with wallet for seamless transaction execution
 
-```bash
-pnpm run dev
-```
+## 🛠️ Available Tools
 
-This command will:
-- Start your Next.js application on `http://localhost:3000`
-- Launch `make-agent` development mode
-- Prompt you to sign a message in your Bitte wallet to authenticate
-- Open your agent in the Bitte playground for testing
-- Enable hot reload for seamless development
-
-### 4. Build for Production
-
-```bash
-# Build without deployment
-pnpm run build
-
-# Build and deploy to production
-pnpm run build:deploy
-```
-
-## 🔧 Available Tools
-
-The boilerplate includes six fully functional tools that demonstrate different agent capabilities:
-
-### 1. **Blockchain Information** (`/api/tools/get-blockchains`)
-- **Purpose**: Returns a randomized list of 3 blockchain networks
-- **Implementation**: Static list with random selection
-- **Use Case**: Demonstrating simple data retrieval and randomization
-
-### 2. **NEAR Transaction Generator** (`/api/tools/create-near-transaction`)
-- **Purpose**: Creates NEAR transaction payloads for token transfers
-- **Parameters**: `receiverId` (NEAR account), `amount` (NEAR tokens)
-- **Implementation**: Converts amounts to yoctoNEAR (10^24) for precision
-- **Integration**: Works with Bitte's `generate-transaction` tool for wallet execution
-
-### 3. **EVM Transaction Generator** (`/api/tools/create-evm-transaction`)
-- **Purpose**: Creates EVM transaction payloads for ETH transfers
-- **Parameters**: `to` (recipient address), `amount` (ETH amount)
-- **Implementation**: Uses viem for proper ETH amount parsing
-- **Integration**: Works with Bitte's `generate-evm-tx` tool for wallet execution
-
-### 4. **Ethereum Message Signing** (`/api/tools/eth-sign-request`)
-- **Purpose**: Creates various Ethereum signature requests
-- **Methods**: `eth_sign`, `personal_sign`, `eth_signTypedData`, `eth_signTypedData_v4`
-- **Parameters**: `evmAddress`, `chainId`, `method`, `message`
-- **Implementation**: Supports both simple messages and typed data structures
-
-### 5. **User Information** (`/api/tools/get-user`)
-- **Purpose**: Returns user's NEAR account ID and EVM address
-- **Context-Aware**: Automatically populated by Bitte's context system
-- **Use Case**: Accessing authenticated user information within agent flows
-
-### 6. **Twitter Integration** (`/api/tools/twitter`)
-- **Purpose**: Generates Twitter share intent URLs
-- **Parameters**: `text` (required), `url`, `hashtags`, `via`
-- **Implementation**: Proper URL encoding for all parameters
-- **Use Case**: Social sharing and engagement features
-
-### 7. **Coin Flip** (`/api/tools/coinflip`)
-- **Purpose**: Simple randomization tool returning "heads" or "tails"
-- **Implementation**: Cryptographically random using Math.random()
-- **Use Case**: Demonstrating simple random functionality
-
-## 🤖 Agent Configuration
-
-The agent is configured through the AI plugin manifest at `/api/ai-plugin/route.ts`. This endpoint returns an OpenAPI specification that defines:
-
-### Agent Metadata
-```typescript
-{
-  name: "Blockchain Assistant",
-  description: "An assistant that answers with blockchain information...",
-  instructions: "You create near and evm transactions, give blockchain information...",
-  tools: [
-    { type: "generate-transaction" },  // NEAR transactions
-    { type: "generate-evm-tx" },       // EVM transactions
-    { type: "sign-message" }           // Message signing
-  ],
-  categories: ["DeFi", "DAO", "Social"],
-  chainIds: [1, 8453]  // Ethereum Mainnet, Base
-}
-```
-
-### Important Configuration Notes
-
-1. **Tool Integration**: The agent uses Bitte's built-in tools (`generate-transaction`, `generate-evm-tx`, `sign-message`) to execute blockchain operations
-2. **Two-Step Process**: Your endpoints generate transaction payloads, then Bitte's tools execute them in the user's wallet
-3. **Chain Support**: Currently configured for Ethereum Mainnet (1) and Base (8453)
-4. **Deployment URL**: Automatically detected from Vercel or environment variables
-
-## 📝 Environment Variables
-
-| Variable | Required | Description | Example |
-|----------|----------|-------------|---------|
-| `BITTE_API_KEY` | ✅ | Your Bitte API key from [key.bitte.ai](https://key.bitte.ai) | `bitte_key_...` |
-| `ACCOUNT_ID` | ✅ | Your blockchain account ID | `walletaddresss` |
-| `NEXT_PUBLIC_HOST` | ❌ | Development host | `localhost` |
-| `PORT` | ❌ | Development port | `3000` |
-| `NEXT_PUBLIC_BASE_URL` | ❌ | Base URL for assets | `https://yourdomain.com` |
-
-## 🛠️ Development Scripts
-
-```bash
-# Development with hot reload and make-agent
-pnpm run dev
-
-# Next.js development only (without make-agent)
-pnpm run dev:agent
-
-# Production build (local)
-pnpm run build
-
-# Build and deploy to production
-pnpm run build:deploy
-
-# Linting
-pnpm run lint
-```
-
-## 🚀 Deployment
-
-### Automatic Deployment (Recommended)
-
-1. Push your code to GitHub
-2. Connect your repository to [Vercel](https://vercel.com)
-3. Add environment variables in Vercel dashboard:
-   - `BITTE_API_KEY`
-   - `ACCOUNT_ID`
-4. Deploy! The build process automatically runs `make-agent deploy`
-
-### Manual Deployment
-
-```bash
-# Build and deploy manually
-pnpm run build:deploy
-```
-
-## 🔨 Creating Custom Tools
-
-To add your own tools to the agent:
-
-### 1. Create the Tool Endpoint
-
-```typescript
-// src/app/api/tools/my-tool/route.ts
-import { NextResponse } from 'next/server';
-
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const param = searchParams.get('param');
-
-  // Your tool logic here
-
-  return NextResponse.json({ result: 'success' });
-}
-```
-
-### 2. Add to Agent Manifest
-
-Update `/api/ai-plugin/route.ts`:
-
-```typescript
-paths: {
-  // ... existing paths
-  "/api/tools/my-tool": {
-    get: {
-      summary: "My custom tool",
-      description: "Description of what your tool does",
-      operationId: "my-tool",
-      parameters: [
-        {
-          name: "param",
-          in: "query",
-          required: true,
-          schema: { type: "string" }
-        }
-      ],
-      responses: {
-        "200": {
-          description: "Successful response",
-          content: {
-            "application/json": {
-              schema: {
-                type: "object",
-                properties: {
-                  result: { type: "string" }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-```
-
-### 3. Update Agent Instructions
-
-Modify the `instructions` field in the agent configuration to include guidance on when and how to use your new tool.
-
-## 📖 Key Dependencies
-
-- **[@bitte-ai/agent-sdk](https://www.npmjs.com/package/@bitte-ai/agent-sdk)** - Core SDK for Bitte integration
-- **[make-agent](https://www.npmjs.com/package/make-agent)** - Development and deployment tooling
-- **[viem](https://viem.sh)** - TypeScript Ethereum library for transaction handling
-- **[Next.js 15](https://nextjs.org)** - React framework with App Router
-- **[vercel-url](https://www.npmjs.com/package/vercel-url)** - Automatic deployment URL detection
-
-## 🌐 Community & Support
-
-- 📚 [Bitte Protocol Documentation](https://docs.bitte.ai)
-- 💬 [Join our Telegram](https://t.me/bitteai) - Get help and connect with other developers
-- 🐛 [Report Issues](https://github.com/BitteProtocol/agent-next-boilerplate/issues)
-- 🔗 [Next.js Documentation](https://nextjs.org/docs)
-- 📋 [OpenAPI Specification](https://swagger.io/specification/)
-
-## 📋 Project Structure
+### Momentum Detection
 
 ```
-agent-next-boilerplate/
-├── src/app/
-│   ├── api/
-│   │   ├── ai-plugin/route.ts      # Agent manifest endpoint
-│   │   └── tools/                  # Tool endpoints
-│   │       ├── get-blockchains/
-│   │       ├── create-near-transaction/
-│   │       ├── create-evm-transaction/
-│   │       ├── eth-sign-request/
-│   │       ├── get-user/
-│   │       ├── twitter/
-│   │       └── coinflip/
-│   ├── config.ts                   # Environment configuration
-│   ├── layout.tsx                  # Root layout
-│   └── page.tsx                    # Home page
-├── public/                         # Static assets
-├── package.json                    # Dependencies and scripts
-└── README.md                       # This file
+/api/tools/detect-momentum
 ```
 
-## 🤝 Contributing
+Scans the market for tokens with significant price movements above a specified threshold.
 
-Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+### Cross-Chain Prices
 
-## 📄 License
+```
+/api/tools/get-cross-chain-prices
+```
 
-MIT License - see [LICENSE](LICENSE) file for details.
+Fetches real-time prices for tokens across multiple blockchains and identifies arbitrage opportunities.
+
+### Momentum Analysis
+
+```
+/api/tools/analyze-momentum
+```
+
+Provides deep technical analysis including RSI, volume profiles, and momentum scoring.
+
+### Strategy Creation
+
+```
+/api/tools/create-momentum-strategy
+```
+
+Generates multi-chain trading strategies with risk management and allocation plans.
+
+### Trade Execution
+
+```
+/api/tools/execute-momentum-trade
+```
+
+Creates detailed execution plans with optimal timing and DEX selection.
+
+### Blockchain Transactions
+
+```
+/api/tools/create-near-transaction
+/api/tools/create-evm-transaction
+```
+
+Generates transaction payloads for NEAR and EVM chains with wallet integration.
+
+## 🚀 Quick Start Examples
+
+### Detect Market Momentum
+
+```
+"Detect any momentum in the market right now with 3% threshold"
+```
+
+### Check Cross-Chain Prices
+
+```
+"What's the current price of BTC across Ethereum, BSC, and Solana?"
+```
+
+### Analyze Specific Token
+
+```
+"Analyze SOL momentum - is it building or fading?"
+```
+
+### Create Trading Strategy
+
+```
+"Create a momentum strategy for ETH with $5000 budget and medium risk"
+```
+
+### Execute Trades
+
+```
+"Execute momentum trade for BTC across Ethereum and BSC with $2000"
+```
+
+## 🎯 Trading Strategy
+
+### Simple Starting Strategy:
+
+1. **Detect**: 5%+ moves on major tokens (BTC, ETH, SOL, MATIC)
+2. **Replicate**: Instantly replicate position across 3-4 chains
+3. **Manage**: Set 15% profit targets and 8% stop losses
+4. **Exit**: Close positions when momentum fades
+
+### Supported Chains:
+
+- **Ethereum** (ETH, wBTC, MATIC, etc.)
+- **BSC** (BNB, BTCB, ETH, etc.)
+- **Polygon** (MATIC, wBTC, ETH, etc.)
+- **Solana** (SOL, Portal BTC, Wrapped ETH, etc.)
+- **Arbitrum** (ETH, wBTC, etc.)
+- **Optimism** (ETH, wBTC, etc.)
+- **Avalanche** (AVAX, BTC.b, WETH.e, etc.)
+
+## 📊 Risk Management
+
+### Position Sizing by Risk Level:
+
+- **Low Risk**: 30% of budget per strategy
+- **Medium Risk**: 60% of budget per strategy
+- **High Risk**: 90% of budget per strategy
+
+### Built-in Safety Features:
+
+- Automatic stop losses at -8%
+- Profit taking at +15%
+- Position limits based on budget
+- Real-time monitoring and alerts
+
+## 🌐 Live Data Sources
+
+- **CoinGecko API**: Real-time prices, volume, market cap
+- **Binance API**: Additional liquidity and volume data
+- **DEX Aggregators**: Cross-chain price comparisons
+- **On-chain Data**: Transaction costs and slippage estimates
+
+## 💡 Unique Value Proposition
+
+Unlike traditional trading bots that focus on single chains, the Multi-Chain Momentum Surfer:
+
+✅ **Captures momentum across ALL major chains simultaneously**  
+✅ **Identifies cross-chain arbitrage opportunities**  
+✅ **Manages risk with automated stop losses and profit targets**  
+✅ **Executes complex multi-chain strategies with simple commands**  
+✅ **Provides real-time market intelligence and analysis**
+
+## 🏄‍♂️ Ready to Surf?
+
+Start by asking the agent to detect current market momentum, then let it guide you through creating and executing profitable cross-chain trading strategies.
+
+The future of DeFi trading is multi-chain. Ride the waves with the Momentum Surfer! 🌊
 
 ---
 
-Built with ❤️ using [Bitte Protocol](https://bitte.ai)
-# multi-chain-momentum-surfer
-# multi-chain-momentum-surfer
-# multi-chain-momentum-surfer
+_Built with Bitte Protocol AI Agent SDK_

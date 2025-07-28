@@ -11,8 +11,6 @@ When BTC pumps 5% on Bitcoin, this agent instantly:
 - Acquires Portal BTC on Solana
 - Rides the momentum wave across ALL chains simultaneously
 
-**Goal**: Turn $2K into $20K by riding cross-chain momentum waves
-
 ## 🎯 How It Works
 
 ### 1. **Momentum Detection**
